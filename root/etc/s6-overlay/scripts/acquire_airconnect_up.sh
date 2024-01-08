@@ -5,35 +5,28 @@ echo "=== Starting acquire_airconnect_up.sh ==="
 # It will check if the downloaded file has been unzipped and if not unzip
 # It will check if the desired binaries are copied into place with the correct permissions
 
-if [ "$ARCH_VAR" == "amd64" ]; then
-  ARCH_VAR=linux-x86_64
-elif [ "$ARCH_VAR" == "arm64" ]; then
-  ARCH_VAR=linux-aarch64
-elif [ "$ARCH_VAR" == "arm" ]; then
-   ARCH_VAR=linux-arm
+var_filename=slingbox_server.py
+
+#download the current python script file
+https://raw.githubusercontent.com/GerryDazoo/Slinger/main/${var_filename}
+
+#test if CONFIG_VAR is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${CONFIG_VAR}" ]; then
+    var_configname="/tmp"
+    echo "  ${var_path}/${var_filename} not found, downloading"
+    mkdir -p ${var_path}
+    # to allow saving download to path, change directory first.
+    #future investigate curl version and --output-dir flag
+    cd ${var_path}
+    curl -L -o ${var_filename} ${var_url}
+    cd /
+else
+   var_configname="${PATH_VAR}"
 fi
 
-echo " Checking for valid arch options"
-case $ARCH_VAR in
-  linux-x86_64)
-    echo "  Proceeding with linux-x86_64 arch"
-    ;;
-  linux-aarch64)
-    echo "  Proceeding with linux-aarch64 arch"
-    ;;
-  linux-arm)
-    echo "  Proceeding with linux-arm arch"
-    ;;
-  *)
-    echo "  Unrecognized or invalid arch selection, CANCELING INSTALL"
-    echo "  ========== FAILURE DETECTED ========="
-    echo "  YOUR CONTAINER WILL NOT WORK, PLEASE ADDRESS OR OPEN AN ISSUE"
-    exit 1
-    ;;
-esac
-
-# update variable so that the statically linked executable is used
-ARCH_VAR="${ARCH_VAR}-static"
+#download the example files
+https://raw.githubusercontent.com/GerryDazoo/Slinger/main/config.ini
+https://raw.githubusercontent.com/GerryDazoo/Slinger/main/unified_config.ini
 
 #test if PATH_VAR is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${PATH_VAR}" ]; then
@@ -41,23 +34,6 @@ if [ -z "${PATH_VAR}" ]; then
 else
    var_path="${PATH_VAR}"
 fi
-
-#test if VERSION_VAR is zero length or not set, if so use default, if not use the passed variable
-if [ -z "${VERSION_VAR}" ]; then
-   var_tag="latest"
-else
-   var_tag="tags/${VERSION_VAR}"
-fi
-
-# download the json and grep out the URL for the supplied tag
-var_url=$(curl -s https://api.github.com/repos/philippe44/AirConnect/releases/${var_tag} | grep browser_download_url | cut -d '"' -f 4)
-# test if variable is zero length or not set (a bad version tag will result in a zero length url)
-if [ -z "${var_url}" ]; then
-   var_url=$(curl -s https://api.github.com/repos/philippe44/AirConnect/releases/latest | grep browser_download_url | cut -d '"' -f 4)
-fi
-
-#derive filename from URL
-var_filename=${var_url##*/}
 
 #future check if file already exists so that downloading can be skipped - only works if download location is persistant
 echo " testing if ${var_path}/${var_filename} exists"
