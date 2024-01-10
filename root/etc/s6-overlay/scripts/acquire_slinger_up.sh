@@ -43,18 +43,18 @@ var_url1=https://raw.githubusercontent.com/GerryDazoo/Slinger/main/${var_config1
 var_url2=https://raw.githubusercontent.com/GerryDazoo/Slinger/main/${var_config2}
 
 #future check if file already exists so that downloading can be skipped - only works if download location is persistant
-echo " testing if either ${var_path}/${var_config1} or ${var_path}/${var_config2} exists"
+echo " testing if either ${var_path}/example_${var_config1} or ${var_path}/example_${var_config2} exists"
 if [ ! -f ${var_path}/${var_config1} -o ! ${var_path}/${var_config2} ]; then
     echo "  not found, downloading"
     # to allow saving download to path, change directory first.
     #future investigate curl version and --output-dir flag
     cd ${var_path}
-    curl -L -o ${var_config1} ${var_url1}
-    curl -L -o ${var_config2} ${var_url2}
+    curl -L -o example_${var_config1} ${var_url1}
+    curl -L -o example_${var_config2} ${var_url2}
     cd /
     #future add check for download success
 else
-    echo "  one configuration file exists"
+    echo "  both example configuration files exist"
 fi
 
 echo "=== exiting acquire_slinger_up.sh ==="
