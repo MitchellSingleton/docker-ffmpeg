@@ -26,7 +26,7 @@ fi
 
 if [ -f  ${var_path}/${SLINGER_VAR} ]; then
     echo " configuration file exists"
-    python3 -u ${var_path}/slingbox_server.py ${var_path}/config.ini
+    python3 -u ${var_path}/slingbox_server.py ${var_path}/${SLINGER_VAR}
 fi
 
 echo "=== Exiting slinger run ==="
