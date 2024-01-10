@@ -13,7 +13,13 @@ fi
 echo " ARCH_VAR=${ARCH_VAR}"
 ARCH_VAR="${ARCH_VAR}-static"
 
-echo " /bin/aircast-${ARCH_VAR}"
+#test if PATH_VAR is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${PATH_VAR}" ]; then
+   var_path="/tmp"
+else
+   var_path="${PATH_VAR}"
+fi
+
 if [ ! -f ${var_path}/${SLINGER_VAR} ]; then
     echo " ${var_path}/${SLINGER_VAR} configuration file not found - exit 125 to prevent restart"
     echo "=== Exiting aircast finish - 125 ==="
