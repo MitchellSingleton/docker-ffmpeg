@@ -1,9 +1,9 @@
 #!/usr/bin/with-contenv bash
 
-echo "=== Starting aircast run ==="
+echo "=== Starting slinger run ==="
 
-if [ "${AIRCAST_VAR}" == "kill" ]; then
-    echo "=== Exiting aircast run - due to AIRCAST variable set to \"kill\" ==="
+if [ -z "${SLINGER_VAR}" ]; then
+    echo "=== Exiting slinger run - due to SLINGER variable not set ==="
     exit 0
 fi
 
@@ -16,39 +16,17 @@ elif [ "$ARCH_VAR" == "arm" ]; then
 fi
 
 echo " ARCH_VAR=${ARCH_VAR}"
-ARCH_VAR="${ARCH_VAR}-static"
 
-if [ -f  ]; then
-    echo " executable  exists"
-    if [ -z "${SLINGER_VAR}" ]; then
-       # default command
-       python3 -u ${SLINGER_APP}/slingbox_server.py ${SLINGER_CONF}/config.ini
-    else
-       # custom command
-       python3 -u ${SLINGER_APP}/slingbox_server.py ${SLINGER_CONF}/config.ini
-    fi
-fi
-
-#!/bin/bash
-
-SLINGER_FILE=${SLINGER_CONF}/slinger.txt
-
-if [ -f "$SLINGER_FILE" ]; then
-	. $SLINGER_FILE
+#test if PATH_VAR is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${PATH_VAR}" ]; then
+   var_path="/tmp"
 else
-	#Copy sample files to /config volume if they don't already exist, does not override existing files
-	cp -n ${SLINGER_APP}/sample_slinger.txt ${SLINGER_CONF}/sample_slinger.txt
-	cp -n ${SLINGER_APP}/sample_xmltv.xml ${SLINGER_CONF}/sample_xmltv.xml
-	cp -n ${SLINGER_APP}/slingbox.m3u ${SLINGER_CONF}/sample_slingbox.m3u
-	cp -n ${SLINGER_APP}/unified_config.ini ${SLINGER_CONF}/sample_unified_config.ini
-	cp -n ${SLINGER_APP}/config.ini ${SLINGER_CONF}/sample_config.ini
-	cp -n ${SLINGER_APP}/config.ini ${SLINGER_CONF}/config.ini
-	cp -n ${SLINGER_APP}/remote.txt ${SLINGER_CONF}/sample_remote.txt
-	
-	python3 -u ${SLINGER_APP}/slingbox_server.py ${SLINGER_CONF}/config.ini
+   var_path="${PATH_VAR}"
 fi
 
-exit
+if [ -f  ${var_path}/${SLINGER_VAR} ]; then
+    echo " configuration file exists"
+    python3 -u ${var_path}/slingbox_server.py ${var_path}/config.ini
+fi
 
-
-echo "=== Exiting aircast run ==="
+echo "=== Exiting slinger run ==="
