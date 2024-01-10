@@ -8,10 +8,14 @@ RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 ARG TARGETARCH
 ENV ARCH_VAR=$TARGETARCH
 
-# future switch to s6
 # alpine uses apk
 RUN apk add --update bash libssl3 openssl-dev unzip && rm  -rf /tmp/* /var/cache/apk/*
-# ADD supervisord.conf /etc/
+
+#Add Slinger dependancies
+RUN apk add py3-pip
+RUN apk add py3-netifaces
+RUN pip3 install --upgrade pip
+RUN pip3 install flask
 COPY root/ /
 RUN chmod 0755 /etc/s6-overlay/scripts/acquire_slinger_up.sh
 ENTRYPOINT ["/init"]
