@@ -15,7 +15,7 @@ RUN apk add py3-pip
 RUN apk add py3-netifaces
 #RUN pip3 install --upgrade pip
 RUN apk add py3-flask
-rm  -rf /tmp/* /var/cache/apk/*
+RUN rm  -rf /tmp/* /var/cache/apk/*
 COPY root/ /
 RUN chmod 0755 /etc/s6-overlay/scripts/acquire_slinger_up.sh
 ENTRYPOINT ["/init"]
