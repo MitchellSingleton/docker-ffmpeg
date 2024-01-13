@@ -1,6 +1,5 @@
 # attempting to use alpine
-#FROM linuxserver/docker-baseimage-alpine:latest
-FROM --platform=$BUILDPLATFORM lsiobase/alpine:3.19
+FROM --platform=$BUILDPLATFORM lscr.io/linuxserver/ffmpeg:latest
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
@@ -11,10 +10,11 @@ ENV ARCH_VAR=$TARGETARCH
 # alpine uses apk
 RUN apk add --update bash 
 #Add Slinger dependancies
-RUN apk add py3-pip
-RUN apk add py3-netifaces
-#RUN pip3 install --upgrade pip
-RUN apk add py3-flask
+RUN apk add curl bash ffmpeg && \
+    rm -rf /var/cache/apk/*
+COPY stream.sh /usr/bin/stream.sh
+RUN chmod +x /usr/bin/stream.sh
+COPY ffserver.conf /etc/ffserver.conf
 RUN rm  -rf /tmp/* /var/cache/apk/*
 COPY root/ /
 RUN chmod 0755 /etc/s6-overlay/scripts/acquire_slinger_up.sh
