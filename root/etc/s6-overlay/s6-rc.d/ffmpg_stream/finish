@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv bash
+
+echo "=== Starting ffmpg_stream finish ==="
+
+if [ ! -f ${var_path}/${SLINGER_VAR} ]; then
+    echo " ${var_path}/${SLINGER_VAR} configuration file not found - exit 125 to prevent restart"
+    echo "=== Exiting ffmpg_stream finish - 125 ==="
+    exit 125
+fi
+
+echo "=== Exiting ffmpg_stream finish ==="
