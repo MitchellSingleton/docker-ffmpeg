@@ -10,7 +10,7 @@ ENV ARCH_VAR=$TARGETARCH
 # alpine uses apk
 RUN apk add --update bash 
 #Add Slinger dependancies
-RUN apk add curl bash ffmpeg && \
+RUN apk add curl && \
     rm -rf /var/cache/apk/*
 COPY stream.sh /usr/bin/stream.sh
 RUN chmod +x /usr/bin/stream.sh
