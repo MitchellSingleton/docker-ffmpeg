@@ -2,34 +2,39 @@
 
 echo "=== Starting ffmpg_stream run ==="
 
-if [ -z "${SLINGER_VAR}" ]; then
-    echo "=== Exiting slinger run - due to SLINGER variable not set ==="
-    exit 0
-fi
-
-if [ "$ARCH_VAR" == "amd64" ]; then
-  ARCH_VAR=linux-x86_64
-elif [ "$ARCH_VAR" == "arm64" ]; then
-  ARCH_VAR=linux-aarch64
-elif [ "$ARCH_VAR" == "arm" ]; then
-  ARCH_VAR=linux-arm
-fi
-
 echo " ARCH_VAR=${ARCH_VAR}"
 
-#test if PATH_VAR is zero length or not set, if so use default, if not use the passed variable
-if [ -z "${PATH_VAR}" ]; then
-   var_path="/tmp"
+#test if FFMPEG_LOG_LEVEL is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${FFMPEG_LOG_LEVEL}" ]; then
+   var_path=""
 else
-   var_path="${PATH_VAR}"
+   var_path="${FFMPEG_LOG_LEVEL}"
 fi
 
-if [ -f  ${var_path}/${SLINGER_VAR} ]; then
-    echo " configuration file exists"
-    python3 -u ${var_path}/slingbox_server.py ${var_path}/${SLINGER_VAR}
+#test if FFMPEG_INPUT_OPTS is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${FFMPEG_INPUT_OPTS}" ]; then
+   var_path=""
+else
+   var_path="${FFMPEG_INPUT_OPTS}"
 fi
 
-ffmpeg -hide_banner -loglevel ${FFMPEG_LOG_LEVEL} -rtsp_transport tcp ${FFMPEG_INPUT_OPTS} -i ${RTSP_URL} ${FFMPEG_OUTPUT_OPTS} http://127.0.0.1:8090/feed.ffm
+#test if RTSP_URL is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${RTSP_URL}" ]; then
+   var_path=""
+else
+   var_path="${RTSP_URL}"
+fi
+
+#test if FFMPEG_OUTPUT_OPTS is zero length or not set, if so use default, if not use the passed variable
+if [ -z "${FFMPEG_OUTPUT_OPTS}" ]; then
+   var_path=""
+else
+   var_path="${FFMPEG_OUTPUT_OPTS}"
+fi
+
+echo "ffmpege -hide_banner -loglevel ${FFMPEG_LOG_LEVEL} -rtsp_transport tcp ${FFMPEG_INPUT_OPTS} -i ${RTSP_URL} ${FFMPEG_OUTPUT_OPTS} http://127.0.0.1:8090/feed.ffm"
+
+ffmpege -hide_banner -loglevel ${FFMPEG_LOG_LEVEL} -rtsp_transport tcp ${FFMPEG_INPUT_OPTS} -i ${RTSP_URL} ${FFMPEG_OUTPUT_OPTS} http://127.0.0.1:8090/feed.ffm
 echo "=== Exiting ffmpg_stream run ==="
 
 
