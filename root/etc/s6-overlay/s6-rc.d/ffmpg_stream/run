@@ -6,35 +6,35 @@ echo " ARCH_VAR=${ARCH_VAR}"
 
 #test if FFMPEG_LOG_LEVEL is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${FFMPEG_LOG_LEVEL}" ]; then
-   var_path=""
+   var_ffmpeg_log_level=""
 else
-   var_path="${FFMPEG_LOG_LEVEL}"
+   var_ffmpeg_log_level="${FFMPEG_LOG_LEVEL}"
 fi
 
 #test if FFMPEG_INPUT_OPTS is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${FFMPEG_INPUT_OPTS}" ]; then
-   var_path=""
+   var_ffmpeg_input_opts=""
 else
-   var_path="${FFMPEG_INPUT_OPTS}"
+   var_ffmpeg_input_opts="${FFMPEG_INPUT_OPTS}"
 fi
 
 #test if RTSP_URL is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${RTSP_URL}" ]; then
-   var_path=""
+   var_rtsp_url=""
 else
-   var_path="${RTSP_URL}"
+   var_rtsp_url="${RTSP_URL}"
 fi
 
 #test if FFMPEG_OUTPUT_OPTS is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${FFMPEG_OUTPUT_OPTS}" ]; then
-   var_path=""
+   var_ffmpeg_output_opts=""
 else
-   var_path="${FFMPEG_OUTPUT_OPTS}"
+   var_ffmpeg_output_opts="${FFMPEG_OUTPUT_OPTS}"
 fi
 
-echo "ffmpeg -hide_banner -loglevel ${FFMPEG_LOG_LEVEL} -rtsp_transport tcp ${FFMPEG_INPUT_OPTS} -i ${RTSP_URL} ${FFMPEG_OUTPUT_OPTS} http://127.0.0.1:8090/feed.ffm"
+echo "ffmpeg -hide_banner -loglevel ${var_ffmpeg_log_level} -rtsp_transport tcp ${var_ffmpeg_input_opts} -i ${var_rtsp_url} ${var_ffmpeg_output_opts} http://127.0.0.1:8090/feed.ffm"
 
-ffmpeg -hide_banner -loglevel ${FFMPEG_LOG_LEVEL} -rtsp_transport tcp ${FFMPEG_INPUT_OPTS} -i ${RTSP_URL} ${FFMPEG_OUTPUT_OPTS} http://127.0.0.1:8090/feed.ffm
+ffmpeg -hide_banner -loglevel ${var_ffmpeg_log_level} -rtsp_transport tcp ${var_ffmpeg_input_opts} -i ${var_rtsp_url} ${var_ffmpeg_output_opts} http://127.0.0.1:8090/feed.ffm
 echo "=== Exiting ffmpg_stream run ==="
 
 
