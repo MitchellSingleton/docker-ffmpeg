@@ -5,8 +5,18 @@ echo "=== Starting ffmpg_stream run ==="
 echo " ARCH_VAR=${ARCH_VAR}"
 
 #test if FFMPEG_LOG_LEVEL is zero length or not set, if so use default, if not use the passed variable
+# "quiet"
+# "panic"
+# "fatal"
+# "error"
+# "warning"
+# "info"
+# "verbose"
+# "debug"
+# "trace"
+
 if [ -z "${FFMPEG_LOG_LEVEL}" ]; then
-   var_ffmpeg_log_level=""
+   var_ffmpeg_log_level="quiet"
 else
    var_ffmpeg_log_level="${FFMPEG_LOG_LEVEL}"
 fi
