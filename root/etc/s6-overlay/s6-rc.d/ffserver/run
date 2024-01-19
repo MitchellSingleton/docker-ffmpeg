@@ -12,20 +12,20 @@ fi
 
 echo " ARCH_VAR=${ARCH_VAR}"
 
-var_ffserver_parameters="-hide_banner"
+var_ffserver_parameters="-hide_banner "
 
 #test if FFSERVER_LOG_LEVEL is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${FFSERVER_LOG_LEVEL}" ]; then
-   var_ffserver_parameters=${var_ffserver_parameters}" -loglevel 0"
+   var_ffserver_parameters=${var_ffserver_parameters}"-loglevel 0 "
 else
-   var_ffserver_parameters=${var_ffserver_parameters}" -loglevel ${FFSERVER_LOG_LEVEL}"
+   var_ffserver_parameters=${var_ffserver_parameters}"-loglevel ${FFSERVER_LOG_LEVEL} "
 fi
 
 #test if FFSERVER_CONFIG is zero length or not set, if so use default, if not use the passed variable
 if [ -z "${FFSERVER_CONFIG}" ]; then
-   var_ffserver_parameters=${var_ffserver_parameters}" -f /etc/ffserver.conf"
+   var_ffserver_parameters=${var_ffserver_parameters}"-f /etc/ffserver.conf "
 else
-   var_ffserver_parameters=${var_ffserver_parameters}" -f ${FFSERVER_CONFIG}"
+   var_ffserver_parameters=${var_ffserver_parameters}"-f ${FFSERVER_CONFIG} "
 fi
 
 ${ffserver_exec} ${var_ffserver_parameters}
